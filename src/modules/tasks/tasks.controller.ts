@@ -1,3 +1,4 @@
+import { UpdateTaskDto } from './dto/update-task.dto';
 import {
   Body,
   Controller,
@@ -28,7 +29,6 @@ export class TasksController {
 
   @Get(':id')
   getTasksById(@Param() { id }): Task {
-    console.log(id);
     return this.tasksService.getTasksById(id);
   }
 
@@ -43,7 +43,7 @@ export class TasksController {
   }
 
   @Patch(':id')
-  updateTask(@Param() { id }, @Body() createTaskDto: CreateTaskDto): Task {
-    return this.tasksService.updateTask(id, createTaskDto);
+  updateTask(@Param() { id }, @Body() updateTaskDto: UpdateTaskDto): Task {
+    return this.tasksService.updateTask(id, updateTaskDto);
   }
 }
