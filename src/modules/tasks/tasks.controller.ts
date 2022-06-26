@@ -21,10 +21,7 @@ export class TasksController {
 
   @Get()
   getTasks(@Query() getTaskFilter: GetTaskFilter): Promise<Task[]> {
-    // if (Object.keys(getTaskFilter).length) {
-    //   return this.tasksService.getTasksWhitFilter(getTaskFilter);
-    // }
-    return this.tasksService.getAllTasks();
+    return this.tasksService.getTasks(getTaskFilter);
   }
   @Get(':id')
   getTasksById(@Param() { id }): Promise<Task> {
@@ -35,6 +32,16 @@ export class TasksController {
   createTasksTasks(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
     return this.tasksService.createTask(createTaskDto);
   }
+
+  @Delete(':id')
+  deleteTask(@Param() { id }): Promise<void> {
+    return this.tasksService.deleteTask(id);
+  }
+  @Patch(':id')
+  updateTask(@Param() { id }, @Body() updateTaskDto: UpdateTaskDto): Promise<Task> {
+    return this.tasksService.updateTask(id, updateTaskDto);
+  }
+
   // #region Basic
   // @Get()
   // getTasks(@Query() getTaskFilter: GetTaskFilter): Task[] {

@@ -11,8 +11,8 @@ import { TaskStatus } from './task.model';
 export class TasksService {
   constructor(private tasksRepository: TasksRepository) {}
 
-  async getAllTasks(): Promise<Task[]> {
-    return this.tasksRepository.api.find();
+  getTasks(taskFilter: GetTaskFilter): Promise<Task[]> {
+    return this.tasksRepository.getTasks(taskFilter);
   }
   async getTaskById(id: string): Promise<Task> {
     const found = await this.tasksRepository.api.findOne({ where: { id } });
@@ -22,9 +22,33 @@ export class TasksService {
     return found;
   }
 
-  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    return await this.tasksRepository.createTask(createTaskDto)
+  createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.tasksRepository.createTask(createTaskDto);
   }
+  async deleteTask(id: string): Promise<void> {
+    const result = await this.tasksRepository.api.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`not found task whit id: ${id}`);
+    }
+  }
+
+  async updateTask(id: string, updateTaskDto: UpdateTaskDto): Promise<Task> {
+    const { title, description, status } = updateTaskDto;
+    let task: Task = await this.getTaskById(id);
+
+    if (title) {
+      task.title = title;
+    }
+    if (description) {
+      task.description = description;
+    }
+    if (status) {
+      task.status = status;
+    }
+    await this.tasksRepository.api.save(task);
+    return task;
+  }
+
   //#region Basic
   // private tasks: Task[] = [
   //   {
