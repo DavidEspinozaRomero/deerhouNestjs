@@ -1,4 +1,3 @@
-import { UpdateTaskDto } from './dto/update-task.dto';
 import {
   Body,
   Controller,
@@ -11,7 +10,7 @@ import {
 } from '@nestjs/common';
 
 import { TasksService } from './tasks.service';
-import { Task } from './task.model';
+import { UpdateTaskDto } from './dto/update-task.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTaskFilter } from './dto/get-task-filter.dto';
 
@@ -19,31 +18,34 @@ import { GetTaskFilter } from './dto/get-task-filter.dto';
 export class TasksController {
   constructor(private tasksService: TasksService) {}
 
-  @Get()
-  getTasks(@Query() getTaskFilter: GetTaskFilter): Task[] {
-    if (Object.keys(getTaskFilter).length) {
-      return this.tasksService.getTasksWhitFilter(getTaskFilter);
-    }
-    return this.tasksService.getAllTasks();
-  }
+  // #region Basic
+  // @Get()
+  // getTasks(@Query() getTaskFilter: GetTaskFilter): Task[] {
+  //   if (Object.keys(getTaskFilter).length) {
+  //     return this.tasksService.getTasksWhitFilter(getTaskFilter);
+  //   }
+  //   return this.tasksService.getAllTasks();
+  // }
 
-  @Get(':id')
-  getTasksById(@Param() { id }): Task {
-    return this.tasksService.getTasksById(id);
-  }
+  // @Get(':id')
+  // getTasksById(@Param() { id }): Task {
+  //   return this.tasksService.getTasksById(id);
+  // }
 
-  @Post()
-  createTasksTasks(@Body() createTaskDto: CreateTaskDto) {
-    return this.tasksService.createTask(createTaskDto);
-  }
+  // @Post()
+  // createTasksTasks(@Body() createTaskDto: CreateTaskDto) {
+  //   return this.tasksService.createTask(createTaskDto);
+  // }
 
-  @Delete(':id')
-  deleteTask(@Param() { id }) {
-    this.tasksService.deleteTask(id);
-  }
+  // @Delete(':id')
+  // deleteTask(@Param() { id }) {
+  //   this.tasksService.deleteTask(id);
+  // }
 
-  @Patch(':id')
-  updateTask(@Param() { id }, @Body() updateTaskDto: UpdateTaskDto): Task {
-    return this.tasksService.updateTask(id, updateTaskDto);
-  }
+  // @Patch(':id')
+  // updateTask(@Param() { id }, @Body() updateTaskDto: UpdateTaskDto): Task {
+  //   return this.tasksService.updateTask(id, updateTaskDto);
+  // }
+  // #endregion Basic
+
 }
