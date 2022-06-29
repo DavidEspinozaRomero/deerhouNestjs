@@ -11,11 +11,12 @@ export class AuthRepository {
   api = this.dataSource.getRepository(User);
 
   async createUser(authCredentialsDto: AuthCredentialsDto): Promise<void> {
+    const { username, password } = authCredentialsDto;
     
     const salt = await bcrypt.genSalt()
+    const hashedPassword = await bcrypt.hash(password, salt)
     
-    const { username, password } = authCredentialsDto;
-    const user = this.api.create({ username, password });
+    const user = this.api.create({ username, password:hashedPassword });
     try {
       await this.api.save(user);
     } catch (error) {
