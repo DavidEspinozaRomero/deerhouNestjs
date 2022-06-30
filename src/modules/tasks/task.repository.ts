@@ -5,6 +5,7 @@ import { Task } from './task.entity';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { TaskStatus } from './task.model';
 import { GetTaskFilter } from './dto/get-task-filter.dto';
+import { User } from '../auth/user.entity';
 
 @Injectable()
 export class TasksRepository {
@@ -26,13 +27,14 @@ export class TasksRepository {
     const tasks: Task[] = await query.getMany();
     return tasks;
   }
-  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+  async createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
     const { title, description } = createTaskDto;
 
     const task = this.api.create({
       title,
       description,
       status: TaskStatus.OPEN,
+      user
     });
     await this.api.save(task);
     return task;
