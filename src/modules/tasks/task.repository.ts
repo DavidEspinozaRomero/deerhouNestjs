@@ -12,9 +12,10 @@ export class TasksRepository {
   constructor(private dataSource: DataSource) {}
   api = this.dataSource.getRepository(Task);
 
-  async getTasks(taskFilter: GetTaskFilter): Promise<Task[]> {
+  async getTasks(taskFilter: GetTaskFilter, user: User,): Promise<Task[]> {
     const { status, filter } = taskFilter;
     const query = this.api.createQueryBuilder('task');
+    query.where({user})
     if (status) {
       query.andWhere('task.status = :status', { status });
     }
