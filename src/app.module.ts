@@ -11,15 +11,19 @@ import { ConfigValidationSchema } from './config.schema';
   imports: [
     ConfigModule.forRoot({
       envFilePath: [`.env.${process.env.STAGE}`],
-      validationSchema: ConfigValidationSchema
+      validationSchema: ConfigValidationSchema,
     }),
     TasksModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: async (configService: ConfigService) => {
-        
+        const isProduction = configService.get('STAGE') === 'prod';
         return {
+          ssl: isProduction,
+          extra: {
+            ssl: isProduction ? { rejectUnauthorized: false } : null,
+          },
           host: configService.get('DB_HOST'),
           database: configService.get('DB_DATABASE'),
           username: configService.get('DB_USERNAME'),

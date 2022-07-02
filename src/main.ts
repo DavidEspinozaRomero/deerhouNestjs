@@ -5,8 +5,9 @@ import { TransformInterceptor } from './interceptors/transform.interceptor';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  app.useGlobalPipes(new ValidationPipe())
-  app.useGlobalInterceptors(new TransformInterceptor())
-  await app.listen(3000);
+  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalInterceptors(new TransformInterceptor());
+  const port = process.env.PORT;
+  await app.listen(port);
 }
 bootstrap();
