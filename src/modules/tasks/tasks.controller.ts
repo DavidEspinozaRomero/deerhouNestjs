@@ -10,15 +10,18 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
+import { AuthGuard } from '@nestjs/passport';
+import { ApiTags } from '@nestjs/swagger';
+
 import { TasksService } from './tasks.service';
 import { UpdateTaskDto } from './dto/update-task.dto';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTaskFilter } from './dto/get-task-filter.dto';
 import { Task } from './task.entity';
-import { AuthGuard } from '@nestjs/passport';
 import { GetUser } from '../auth/get-user.decorator';
 import { User } from '../auth/user.entity';
 
+@ApiTags('tasks')
 @Controller('tasks')
 @UseGuards(AuthGuard())
 export class TasksController {
